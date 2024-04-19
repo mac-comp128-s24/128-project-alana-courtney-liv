@@ -25,8 +25,8 @@ public class RPS {
         ui = new UI((int) (WINDOW_WIDTH * .2), WINDOW_HEIGHT);
         canvas.add(ui, 0, 50);
         teamCounts = new HashMap<>();
-        teamCounts.put(GamePiece.PieceType.ROCK, 3);
-        teamCounts.put(GamePiece.PieceType.PAPER, 3);
+        teamCounts.put(GamePiece.PieceType.ROCK, 15);
+        teamCounts.put(GamePiece.PieceType.PAPER, 7);
         teamCounts.put(GamePiece.PieceType.SCISSORS, 3);
         pieces = new HashSet<>();
         addPieces();
@@ -34,22 +34,23 @@ public class RPS {
 
     public void addPieces() {
         Random r = new Random();
+        int pieceCount = teamCounts.get(GamePiece.PieceType.ROCK) + teamCounts.get(GamePiece.PieceType.PAPER) + teamCounts.get(GamePiece.PieceType.SCISSORS);
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.ROCK); i++) {
             GamePiece tempRock = new GamePiece(GamePiece.PieceType.ROCK, canvas, 0);
             pieceField.add(tempRock, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
-            tempRock.setMaxHeight(WINDOW_HEIGHT / (4 * teamCounts.get(GamePiece.PieceType.ROCK)));
+            tempRock.setMaxHeight(WINDOW_HEIGHT / pieceCount);
             pieces.add(tempRock);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.PAPER); i++) {
             GamePiece tempPaper = new GamePiece(GamePiece.PieceType.PAPER, canvas, 0);
             pieceField.add(tempPaper, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
-            tempPaper.setMaxHeight(WINDOW_HEIGHT / (4 * teamCounts.get(GamePiece.PieceType.PAPER)));
+            tempPaper.setMaxHeight(WINDOW_HEIGHT / pieceCount);
             pieces.add(tempPaper);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.SCISSORS); i++) {
             GamePiece tempScissors = new GamePiece(GamePiece.PieceType.SCISSORS, canvas, 0);
             pieceField.add(tempScissors, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
-            tempScissors.setMaxHeight(WINDOW_HEIGHT / (4 * teamCounts.get(GamePiece.PieceType.SCISSORS)));
+            tempScissors.setMaxHeight(WINDOW_HEIGHT / pieceCount);
             pieces.add(tempScissors);
         }
     }
