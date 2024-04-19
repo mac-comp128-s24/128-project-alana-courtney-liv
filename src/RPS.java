@@ -6,11 +6,11 @@ import java.util.Random;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
-import edu.macalester.graphics.GraphicsObject;
 
 public class RPS {
     private final int WINDOW_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private final int WINDOW_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private final GamePieceComparator gpc = new GamePieceComparator();
 
     private CanvasWindow canvas;
     private GraphicsGroup pieceField;
@@ -63,15 +63,18 @@ public class RPS {
 
     private void moveAll() {
         for (GamePiece piece : pieces) {
-            piece.updatePosition(canvas.getCenter(), 10);
+            piece.updatePosition(canvas.getCenter(), 5);
         }
     }
 
     private void handleCollisions() {
         for (GamePiece piece : pieces) {
-            GraphicsObject touching = pieceField.getElementAt(piece.getPosition());
-            if (touching != null && touching.getClass() == GamePiece.class && !touching.equals(piece)) {
-                
+            GamePiece piece2 = (GamePiece) pieceField.getElementAt(piece.getPosition());
+            if (piece2 != null && !piece2.equals(piece)) {
+                int result = gpc.compare(piece, piece2);
+                if (result == -1) {
+                    piece.changeType(piece2.getType());
+                }
             }
         }
     }
