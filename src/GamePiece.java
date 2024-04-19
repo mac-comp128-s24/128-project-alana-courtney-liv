@@ -42,7 +42,7 @@ public class GamePiece extends Image {
 
         direction = normalizeRadians(
             direction
-                + (Math.random() - 0.5) * (WIGGLINESS * (speed / 5))
+                + (Math.random() - 0.5) * (WIGGLINESS * (speed / 10))
                 + turnTowardCenter * Math.tanh(distToCenter / (WANDER_FROM_CENTER / (speed / 2))));
     }
 
