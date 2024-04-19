@@ -22,7 +22,7 @@ public class RPS {
         canvas = new CanvasWindow("Rock Paper Scissors", WINDOW_WIDTH, WINDOW_HEIGHT);
         pieceField = new GraphicsGroup();
         canvas.add(pieceField);
-        ui = new UI();
+        ui = new UI((int) (WINDOW_WIDTH * .2), WINDOW_HEIGHT);
         canvas.add(ui, 0, 50);
         teamCounts = new HashMap<>();
         teamCounts.put(GamePiece.PieceType.ROCK, 3);
