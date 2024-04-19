@@ -6,11 +6,13 @@ import java.util.Random;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.Point;
 
 public class RPS {
     private final int WINDOW_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private final int WINDOW_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     private final GamePieceComparator gpc = new GamePieceComparator();
+    private final Random r = new Random();
 
     private CanvasWindow canvas;
     private GraphicsGroup pieceField;
@@ -33,7 +35,6 @@ public class RPS {
     }
 
     public void addPieces() {
-        Random r = new Random();
         int pieceCount = teamCounts.get(GamePiece.PieceType.ROCK) + teamCounts.get(GamePiece.PieceType.PAPER) + teamCounts.get(GamePiece.PieceType.SCISSORS);
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.ROCK); i++) {
             GamePiece tempRock = new GamePiece(GamePiece.PieceType.ROCK, canvas, 0);
@@ -63,8 +64,9 @@ public class RPS {
     }
 
     private void moveAll() {
+        Point centerPoint = new Point(r.nextDouble(WINDOW_WIDTH / 10, 9 * (WINDOW_WIDTH / 10)), r.nextDouble(WINDOW_HEIGHT / 10, 9 * (WINDOW_HEIGHT / 10)));
         for (GamePiece piece : pieces) {
-            piece.updatePosition(canvas.getCenter(), 5);
+            piece.updatePosition(centerPoint, 5);
         }
     }
 
