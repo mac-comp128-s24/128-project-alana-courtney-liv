@@ -7,29 +7,27 @@ import java.util.Random;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Point;
+import edu.macalester.graphics.events.Key;
 
 public class RPS {
-    private final int WINDOW_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    private final int WINDOW_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private final double WINDOW_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    private final double WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     private final GamePieceComparator gpc = new GamePieceComparator();
     private final Random r = new Random();
 
     private CanvasWindow canvas;
-    private GraphicsGroup pieceField;
+    private GraphicsGroup pieceGroup;
     private HashMap<GamePiece.PieceType, Integer> teamCounts;
     private HashSet<GamePiece> pieces;
     private UI ui;
 
     public RPS() {
-        canvas = new CanvasWindow("Rock Paper Scissors", WINDOW_WIDTH, WINDOW_HEIGHT);
-        pieceField = new GraphicsGroup();
-        canvas.add(pieceField);
-        ui = new UI((int) (WINDOW_WIDTH * .2), WINDOW_HEIGHT);
-        canvas.add(ui, 0, 50);
-        teamCounts = new HashMap<>();
-        teamCounts.put(GamePiece.PieceType.ROCK, 15);
-        teamCounts.put(GamePiece.PieceType.PAPER, 7);
-        teamCounts.put(GamePiece.PieceType.SCISSORS, 3);
+        canvas = new CanvasWindow("Rock Paper Scissors", (int) WINDOW_WIDTH, (int) WINDOW_HEIGHT);
+        pieceGroup = new GraphicsGroup();
+        canvas.add(pieceGroup);
+        ui = new UI(.2 * WINDOW_WIDTH, WINDOW_HEIGHT);
+        canvas.add(ui, 0, 0);
+        teamCounts = ui.getTeamCounts();
         pieces = new HashSet<>();
         addPieces();
     }
@@ -38,19 +36,19 @@ public class RPS {
         int pieceCount = teamCounts.get(GamePiece.PieceType.ROCK) + teamCounts.get(GamePiece.PieceType.PAPER) + teamCounts.get(GamePiece.PieceType.SCISSORS);
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.ROCK); i++) {
             GamePiece tempRock = new GamePiece(GamePiece.PieceType.ROCK, canvas, 0);
-            pieceField.add(tempRock, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
+            pieceGroup.add(tempRock, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
             tempRock.setMaxHeight(WINDOW_HEIGHT / pieceCount);
             pieces.add(tempRock);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.PAPER); i++) {
             GamePiece tempPaper = new GamePiece(GamePiece.PieceType.PAPER, canvas, 0);
-            pieceField.add(tempPaper, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
+            pieceGroup.add(tempPaper, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
             tempPaper.setMaxHeight(WINDOW_HEIGHT / pieceCount);
             pieces.add(tempPaper);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.SCISSORS); i++) {
             GamePiece tempScissors = new GamePiece(GamePiece.PieceType.SCISSORS, canvas, 0);
-            pieceField.add(tempScissors, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
+            pieceGroup.add(tempScissors, r.nextDouble(0, WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
             tempScissors.setMaxHeight(WINDOW_HEIGHT / pieceCount);
             pieces.add(tempScissors);
         }
@@ -60,6 +58,13 @@ public class RPS {
         canvas.animate(() -> {
             moveAll();
             handleCollisions();
+        });
+        canvas.onKeyDown(e -> {
+            if (e.getKey() == Key.RETURN_OR_ENTER) {
+                pieceGroup.removeAll();
+                pieces.clear();
+                addPieces();
+            }
         });
     }
 
@@ -72,7 +77,7 @@ public class RPS {
 
     private void handleCollisions() {
         for (GamePiece piece : pieces) {
-            GamePiece piece2 = (GamePiece) pieceField.getElementAt(piece.getPosition());
+            GamePiece piece2 = (GamePiece) pieceGroup.getElementAt(piece.getPosition());
             if (piece2 != null && !piece2.equals(piece)) {
                 int result = gpc.compare(piece, piece2);
                 if (result == -1) {
