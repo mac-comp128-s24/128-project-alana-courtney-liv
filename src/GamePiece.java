@@ -9,12 +9,13 @@ public class GamePiece extends Image {
     }
     private static final double WANDER_FROM_CENTER = 60000;
     private static final double WIGGLINESS = 0.2;
-    private double direction = 0;
+    private double direction;
     private PieceType type;
 
     public GamePiece(PieceType type) {
         super(0,0);
         this.type = type;
+        direction = 0;
         setPath();
     }
 
@@ -32,6 +33,10 @@ public class GamePiece extends Image {
         }
     }
 
+    public void switchDirection() {
+        direction -= 180;
+    }
+
     public void updatePosition(Point centerOfGravity, double speed) {
         moveBy(Math.cos(direction) * speed, Math.sin(direction) * speed);
 
@@ -41,8 +46,8 @@ public class GamePiece extends Image {
 
         direction = normalizeRadians(
             direction
-                + (Math.random() - 0.5) * (WIGGLINESS * (speed / 10))
-                + turnTowardCenter * Math.tanh(distToCenter / (WANDER_FROM_CENTER / (speed / 2))));
+                + (Math.random() - 0.5) * (WIGGLINESS)
+                + turnTowardCenter * Math.tanh(distToCenter / (WANDER_FROM_CENTER)));
     }
 
     private static double normalizeRadians(double theta) {
