@@ -1,4 +1,3 @@
-import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Image;
 import edu.macalester.graphics.Point;
 
@@ -13,7 +12,7 @@ public class GamePiece extends Image {
     private double direction = 0;
     private PieceType type;
 
-    public GamePiece(PieceType type, CanvasWindow canvas, double minY) {
+    public GamePiece(PieceType type) {
         super(0,0);
         this.type = type;
         setPath();

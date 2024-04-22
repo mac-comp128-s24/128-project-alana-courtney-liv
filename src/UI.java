@@ -40,6 +40,18 @@ public class UI extends GraphicsGroup {
 
         startButton = new Button("SIMULATE");
         add(startButton);
+
+        GamePiece rockIcon = new GamePiece(GamePiece.PieceType.ROCK);
+        rockIcon.setMaxWidth(.2 * width);
+        add(rockIcon, width * .1, height * .175);
+
+        GamePiece paperIcon = new GamePiece(GamePiece.PieceType.PAPER);
+        paperIcon.setMaxWidth(.2 * width);
+        add(paperIcon, width * .1, height * .275);
+
+        GamePiece scissorsIcon = new GamePiece(GamePiece.PieceType.SCISSORS);
+        scissorsIcon.setMaxWidth(.2 * width);
+        add(scissorsIcon, width * .1, height * .375);
     }
 
     public HashMap<GamePiece.PieceType, Integer> getTeamCounts() {
