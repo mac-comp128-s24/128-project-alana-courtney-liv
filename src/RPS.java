@@ -20,6 +20,7 @@ public class RPS {
     private HashSet<GamePiece> pieces;
     private int pieceCount;
     private UI ui;
+    private boolean running;
 
     public RPS() {
         canvas = new CanvasWindow("Rock Paper Scissors", (int) WINDOW_WIDTH, (int) WINDOW_HEIGHT);
@@ -30,6 +31,7 @@ public class RPS {
         teamCounts = ui.getTeamCounts();
         pieces = new HashSet<>();
         addPieces();
+        running = false;
 
         ui.startButton.onClick(() -> reset());
     }
@@ -58,9 +60,11 @@ public class RPS {
 
     private void run() {
         canvas.animate(() -> {
-            moveAll();
-            handleCollisions();
-            checkWinner();
+            if (running) {
+                moveAll();
+                handleCollisions();
+                checkWinner();
+            }
         });
     }
 
@@ -69,6 +73,7 @@ public class RPS {
         pieces.clear();
         teamCounts = ui.getTeamCounts();
         addPieces();
+        running = true;
     }
 
     private void moveAll() {
@@ -116,13 +121,14 @@ public class RPS {
     private void checkWinner() {
         for (GamePiece.PieceType team : teamCounts.keySet()) {
             if (teamCounts.get(team) == pieceCount) {
+                running = false;
                 endGame(team);
             }
         }
     }
 
     private void endGame(GamePiece.PieceType winner) {
-        System.out.println(winner + " won!");
+        System.out.println(winner + " WON!");
     }
 
     public static void main(String[] args) {
