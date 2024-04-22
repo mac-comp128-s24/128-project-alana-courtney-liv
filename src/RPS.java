@@ -91,6 +91,7 @@ public class RPS {
                     teamCounts.put(piece.getType(), teamCounts.get(piece.getType()) - 1);
                     piece.changeType(piece2.getType());
                     teamCounts.put(piece.getType(), teamCounts.get(piece.getType()) + 1);
+                    ui.updateTeamCounts(teamCounts);
                 }
             }
         }

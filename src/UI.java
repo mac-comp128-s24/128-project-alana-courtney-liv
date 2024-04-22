@@ -39,7 +39,7 @@ public class UI extends GraphicsGroup {
         add(scissorsInput, width * .5, height * .4);
 
         startButton = new Button("SIMULATE");
-        add(startButton);
+        add(startButton, width / 2 - startButton.getWidth() / 2, height * .05);
 
         GamePiece rockIcon = new GamePiece(GamePiece.PieceType.ROCK);
         rockIcon.setMaxWidth(.2 * width);
@@ -62,5 +62,11 @@ public class UI extends GraphicsGroup {
         counts.put(GamePiece.PieceType.SCISSORS, Integer.parseInt(scissorsInput.getText()));
 
         return counts;
+    }
+
+    public void updateTeamCounts(HashMap<GamePiece.PieceType, Integer> counts) {
+        rockInput.setText(counts.get(GamePiece.PieceType.ROCK).toString());
+        paperInput.setText(counts.get(GamePiece.PieceType.PAPER).toString());
+        scissorsInput.setText(counts.get(GamePiece.PieceType.SCISSORS).toString());
     }
 }
