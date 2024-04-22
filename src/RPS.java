@@ -72,8 +72,8 @@ public class RPS {
     }
 
     private void moveAll() {
-        Point centerPoint = new Point(r.nextDouble(WINDOW_WIDTH / 10, 9 * (WINDOW_WIDTH / 10)), r.nextDouble(WINDOW_HEIGHT / 10, 9 * (WINDOW_HEIGHT / 10)));
         for (GamePiece piece : pieces) {
+            Point centerPoint = new Point(r.nextDouble(WINDOW_WIDTH / 10, WINDOW_WIDTH), r.nextDouble(WINDOW_HEIGHT / 3, 2 * (WINDOW_HEIGHT / 3)));
             piece.updatePosition(centerPoint, 5);
         }
     }
