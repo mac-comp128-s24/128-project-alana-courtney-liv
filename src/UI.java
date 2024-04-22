@@ -2,6 +2,7 @@ import java.util.HashMap;
 
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Rectangle;
+import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.ui.TextField;
 
 public class UI extends GraphicsGroup {
@@ -9,6 +10,8 @@ public class UI extends GraphicsGroup {
     private TextField rockInput;
     private TextField paperInput;
     private TextField scissorsInput;
+
+    public Button startButton;
 
     private double width;
     private double height;
@@ -18,21 +21,25 @@ public class UI extends GraphicsGroup {
         this.add(new Rectangle(0, 0, width, height));
         this.width = width;
         this.height = height;
-        setupTextFields();
+
+        setupGraphics();
     }
 
-    private void setupTextFields() {
+    private void setupGraphics() {
         rockInput = new TextField();
         rockInput.setText("10");
-        this.add(rockInput, width * .5, height * .2);
+        add(rockInput, width * .5, height * .2);
 
         paperInput = new TextField();
         paperInput.setText("10");
-        this.add(paperInput, width * .5, height * .3);
+        add(paperInput, width * .5, height * .3);
 
         scissorsInput = new TextField();
         scissorsInput.setText("10");
-        this.add(scissorsInput, width * .5, height * .4);
+        add(scissorsInput, width * .5, height * .4);
+
+        startButton = new Button("SIMULATE");
+        add(startButton);
     }
 
     public HashMap<GamePiece.PieceType, Integer> getTeamCounts() {

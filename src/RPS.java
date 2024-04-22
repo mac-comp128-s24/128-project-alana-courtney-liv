@@ -6,6 +6,7 @@ import java.util.Random;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.GraphicsObserver;
 import edu.macalester.graphics.Point;
 import edu.macalester.graphics.events.Key;
 
@@ -30,6 +31,8 @@ public class RPS {
         teamCounts = ui.getTeamCounts();
         pieces = new HashSet<>();
         addPieces();
+
+        ui.startButton.onClick(() -> reset());
     }
 
     public void addPieces() {
@@ -54,18 +57,18 @@ public class RPS {
         }
     }
 
-    public void run() {
+    private void run() {
         canvas.animate(() -> {
             moveAll();
             handleCollisions();
         });
-        canvas.onKeyDown(e -> {
-            if (e.getKey() == Key.RETURN_OR_ENTER) {
-                pieceGroup.removeAll();
-                pieces.clear();
-                addPieces();
-            }
-        });
+    }
+
+    public void reset() {
+        pieceGroup.removeAll();
+        pieces.clear();
+        teamCounts = ui.getTeamCounts();
+        addPieces();
     }
 
     private void moveAll() {
