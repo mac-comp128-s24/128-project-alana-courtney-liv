@@ -33,27 +33,35 @@ public class RPS {
         addPieces();
         running = false;
 
-        ui.startButton.onClick(() -> reset());
+        ui.getButton().onClick(() -> {
+            ui.toggleButton();
+            running = ui.isRunning();
+            if (running) {
+                reset();
+            }
+            canvas.draw();
+        });
     }
 
     public void addPieces() {
         pieceCount = teamCounts.get(GamePiece.PieceType.ROCK) + teamCounts.get(GamePiece.PieceType.PAPER) + teamCounts.get(GamePiece.PieceType.SCISSORS);
+        double scale = WINDOW_HEIGHT / (Math.log(pieceCount) / Math.log(1.2));
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.ROCK); i++) {
             GamePiece tempRock = new GamePiece(GamePiece.PieceType.ROCK);
             pieceGroup.add(tempRock, r.nextDouble(ui.getX() + ui.getWidth(), WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
-            tempRock.setMaxHeight(WINDOW_HEIGHT / pieceCount);
+            tempRock.setMaxHeight(scale);
             pieces.add(tempRock);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.PAPER); i++) {
             GamePiece tempPaper = new GamePiece(GamePiece.PieceType.PAPER);
             pieceGroup.add(tempPaper, r.nextDouble(ui.getX() + ui.getWidth(), WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
-            tempPaper.setMaxHeight(WINDOW_HEIGHT / pieceCount);
+            tempPaper.setMaxHeight(scale);
             pieces.add(tempPaper);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.SCISSORS); i++) {
             GamePiece tempScissors = new GamePiece(GamePiece.PieceType.SCISSORS);
             pieceGroup.add(tempScissors, r.nextDouble(ui.getX() + ui.getWidth(), WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
-            tempScissors.setMaxHeight(WINDOW_HEIGHT / pieceCount);
+            tempScissors.setMaxHeight(scale);
             pieces.add(tempScissors);
         }
     }

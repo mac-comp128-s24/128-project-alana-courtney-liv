@@ -11,7 +11,8 @@ public class UI extends GraphicsGroup {
     private TextField paperInput;
     private TextField scissorsInput;
 
-    public Button startButton;
+    private Button startButton;
+    private boolean running;
 
     private double width;
     private double height;
@@ -21,24 +22,25 @@ public class UI extends GraphicsGroup {
         this.add(new Rectangle(0, 0, width, height));
         this.width = width;
         this.height = height;
+        running = false;
 
         setupGraphics();
     }
 
     private void setupGraphics() {
         rockInput = new TextField();
-        rockInput.setText("10");
+        rockInput.setText("5");
         add(rockInput, width * .5, height * .2);
 
         paperInput = new TextField();
-        paperInput.setText("10");
+        paperInput.setText("5");
         add(paperInput, width * .5, height * .3);
 
         scissorsInput = new TextField();
-        scissorsInput.setText("10");
+        scissorsInput.setText("5");
         add(scissorsInput, width * .5, height * .4);
 
-        startButton = new Button("SIMULATE");
+        startButton = new Button("START");
         add(startButton, width / 2 - startButton.getWidth() / 2, height * .05);
 
         GamePiece rockIcon = new GamePiece(GamePiece.PieceType.ROCK);
@@ -64,9 +66,28 @@ public class UI extends GraphicsGroup {
         return counts;
     }
 
+    public void toggleButton() {
+        if (!running) {
+            startButton = new Button("STOP");
+            running = true;
+        }
+        else {
+            startButton = new Button("START");
+            running = false;
+        }
+    }
+
     public void updateTeamCounts(HashMap<GamePiece.PieceType, Integer> counts) {
         rockInput.setText(counts.get(GamePiece.PieceType.ROCK).toString());
         paperInput.setText(counts.get(GamePiece.PieceType.PAPER).toString());
         scissorsInput.setText(counts.get(GamePiece.PieceType.SCISSORS).toString());
+    }
+
+    public Button getButton() {
+        return startButton;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }
