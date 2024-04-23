@@ -15,7 +15,7 @@ public class UI extends GraphicsGroup {
     private TextField paperInput;
     private TextField scissorsInput;
 
-    private Button startButton;
+    public Button startButton;
     private boolean running;
 
     private double width;
@@ -95,14 +95,14 @@ public class UI extends GraphicsGroup {
     }
 
 
+    /**
+     * Updates text boxes to display current team counts
+     * @param counts
+     */
     public void updateTeamCounts(HashMap<GamePiece.PieceType, Integer> counts) {
         rockInput.setText(counts.get(GamePiece.PieceType.ROCK).toString());
         paperInput.setText(counts.get(GamePiece.PieceType.PAPER).toString());
         scissorsInput.setText(counts.get(GamePiece.PieceType.SCISSORS).toString());
-    }
-
-    public Button getButton() {
-        return startButton;
     }
 
     public boolean isRunning() {

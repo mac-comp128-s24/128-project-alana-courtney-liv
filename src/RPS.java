@@ -36,13 +36,12 @@ public class RPS {
         addPieces();
         running = false;
 
-        ui.getButton().onClick(() -> {
+        ui.startButton.onClick(() -> {
             ui.toggleButton();
             running = ui.isRunning();
             if (running) {
                 reset();
             }
-            canvas.draw();
         });
     }
 
@@ -52,21 +51,27 @@ public class RPS {
     public void addPieces() {
         pieceCount = teamCounts.get(GamePiece.PieceType.ROCK) + teamCounts.get(GamePiece.PieceType.PAPER) + teamCounts.get(GamePiece.PieceType.SCISSORS);
         double scale = WINDOW_HEIGHT / (Math.log(pieceCount) / Math.log(1.2));
+        
+        double minX = ui.getX() + ui.getWidth() + scale;
+        double maxX = WINDOW_WIDTH - scale;
+        double minY = scale;
+        double maxY = WINDOW_HEIGHT - scale;
+
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.ROCK); i++) {
             GamePiece tempRock = new GamePiece(GamePiece.PieceType.ROCK);
-            pieceGroup.add(tempRock, r.nextDouble(ui.getX() + ui.getWidth(), WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
+            pieceGroup.add(tempRock, r.nextDouble(minX, maxX), r.nextDouble(minY, maxY));
             tempRock.setMaxHeight(scale);
             pieces.add(tempRock);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.PAPER); i++) {
             GamePiece tempPaper = new GamePiece(GamePiece.PieceType.PAPER);
-            pieceGroup.add(tempPaper, r.nextDouble(ui.getX() + ui.getWidth(), WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
+            pieceGroup.add(tempPaper, r.nextDouble(minX, maxX), r.nextDouble(minY, maxY));
             tempPaper.setMaxHeight(scale);
             pieces.add(tempPaper);
         }
         for (int i = 0; i < teamCounts.get(GamePiece.PieceType.SCISSORS); i++) {
             GamePiece tempScissors = new GamePiece(GamePiece.PieceType.SCISSORS);
-            pieceGroup.add(tempScissors, r.nextDouble(ui.getX() + ui.getWidth(), WINDOW_WIDTH), r.nextDouble(0, WINDOW_HEIGHT));
+            pieceGroup.add(tempScissors, r.nextDouble(minX, maxX), r.nextDouble(minY, maxY));
             tempScissors.setMaxHeight(scale);
             pieces.add(tempScissors);
         }
