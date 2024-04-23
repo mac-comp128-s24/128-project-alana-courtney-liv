@@ -1,6 +1,10 @@
 import edu.macalester.graphics.Image;
 import edu.macalester.graphics.Point;
 
+/**
+ * Represents a single rock, paper, or scissors in the hit game Rock, Paper, Scissors
+ * @author Olive Pilling Chappelear, Courtney Brown, Alana Nadolski
+ */
 public class GamePiece extends Image {
     public enum PieceType {
         ROCK,
@@ -19,6 +23,9 @@ public class GamePiece extends Image {
         setPath();
     }
 
+    /**
+     * Sets image to reflect piece type
+     */
     private void setPath() {
         switch (type) {
             case ROCK :
@@ -37,6 +44,11 @@ public class GamePiece extends Image {
         direction -= 180;
     }
 
+    /**
+     * Calculates next position of this GamePiece
+     * @param centerOfGravity point around which GamePiece moves
+     * @param speed movement speed of each GamePiece
+     */
     public void updatePosition(Point centerOfGravity, double speed) {
         moveBy(Math.cos(direction) * speed, Math.sin(direction) * speed);
 
@@ -55,7 +67,7 @@ public class GamePiece extends Image {
         return ((theta + Math.PI) % pi2 + pi2) % pi2 - Math.PI;
     }
 
-    public void changeType(PieceType newType) {
+    public void setType(PieceType newType) {
         type = newType;
         setPath();
     }

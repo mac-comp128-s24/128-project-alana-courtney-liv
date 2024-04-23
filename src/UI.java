@@ -5,6 +5,10 @@ import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.ui.TextField;
 
+/**
+ * UI manager for Rock Paper Scissors game
+ * @author Olive Pilling Chappelear, Courtney Brown, Alana Nadolski
+ */
 public class UI extends GraphicsGroup {
     
     private TextField rockInput;
@@ -27,6 +31,9 @@ public class UI extends GraphicsGroup {
         setupGraphics();
     }
 
+    /**
+     * Arranges and adds all components to the canvas
+     */
     private void setupGraphics() {
         rockInput = new TextField();
         rockInput.setText("5");
@@ -56,6 +63,9 @@ public class UI extends GraphicsGroup {
         add(scissorsIcon, width * .1, height * .375);
     }
 
+    /**
+     * @return HashMap representing the number of pieces on each team
+     */
     public HashMap<GamePiece.PieceType, Integer> getTeamCounts() {
         HashMap<GamePiece.PieceType, Integer> counts = new HashMap<>();
 
@@ -66,16 +76,24 @@ public class UI extends GraphicsGroup {
         return counts;
     }
 
+    /**
+     * Stops/starts simulation, updates button to reflect state.
+     */
     public void toggleButton() {
         if (!running) {
-            startButton = new Button("STOP");
+            remove(startButton); // Remove the old button
+            startButton = new Button("STOP"); // Create a new button with updated text
+            add(startButton, width / 2 - startButton.getWidth() / 2, height * 0.05); // Add the new button to the UI group
             running = true;
-        }
+        } 
         else {
-            startButton = new Button("START");
+            remove(startButton); // Remove the old button
+            startButton = new Button("START"); // Create a new button with updated text
+            add(startButton, width / 2 - startButton.getWidth() / 2, height * 0.05); // Add the new button to the UI group
             running = false;
         }
     }
+
 
     public void updateTeamCounts(HashMap<GamePiece.PieceType, Integer> counts) {
         rockInput.setText(counts.get(GamePiece.PieceType.ROCK).toString());

@@ -1,5 +1,9 @@
 import java.util.Comparator;
 
+/**
+ * Comparator class for GamePiece objects
+ * @author Olive Pilling Chappelear, Courtney Brown, Alana Nadolski
+ */
 public class GamePieceComparator implements Comparator<GamePiece> {
 
     public int compare(GamePiece o1, GamePiece o2) {

@@ -7,6 +7,10 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Point;
 
+/**
+ * Needlessly complex implementation of the hit game Rock, Paper, Scissors
+ * @author Olive Pilling Chappelear, Courtney Brown, Alana Nadolski
+ */
 public class RPS {
     private final double WINDOW_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private final double WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -42,6 +46,9 @@ public class RPS {
         });
     }
 
+    /**
+     * Creates and randomly arranges game pieces based on team counts
+     */
     public void addPieces() {
         pieceCount = teamCounts.get(GamePiece.PieceType.ROCK) + teamCounts.get(GamePiece.PieceType.PAPER) + teamCounts.get(GamePiece.PieceType.SCISSORS);
         double scale = WINDOW_HEIGHT / (Math.log(pieceCount) / Math.log(1.2));
@@ -75,6 +82,9 @@ public class RPS {
         });
     }
 
+    /**
+     * Restarts the game with new team counts
+     */
     public void reset() {
         pieceGroup.removeAll();
         pieces.clear();
@@ -83,6 +93,9 @@ public class RPS {
         running = true;
     }
 
+    /**
+     * Updates position of all game pieces
+     */
     private void moveAll() {
         for (GamePiece piece : pieces) {
             Point centerPoint = new Point(r.nextDouble(WINDOW_WIDTH / 10, WINDOW_WIDTH), WINDOW_HEIGHT / 2);
@@ -94,6 +107,9 @@ public class RPS {
         }
     }
 
+    /**
+     * Changes type of overlapping pieces following the logic of Rock, Paper, Scissors
+     */
     private void handleCollisions() {
         for (GamePiece piece : pieces) {
             GamePiece piece2 = (GamePiece) pieceGroup.getElementAt(piece.getPosition());
@@ -101,14 +117,19 @@ public class RPS {
                 int result = gpc.compare(piece, piece2);
                 if (result == -1) {
                     teamCounts.put(piece.getType(), teamCounts.get(piece.getType()) - 1);
-                    piece.changeType(piece2.getType());
+                    piece.setType(piece2.getType());
                     teamCounts.put(piece.getType(), teamCounts.get(piece.getType()) + 1);
                     ui.updateTeamCounts(teamCounts);
                 }
             }
         }
     }
-     
+    
+    /**
+     * Checks whether given piece is out of bounds
+     * @param piece GamePiece whose position is being validated
+     * @return whether given piece is out of bounds
+     */
     private boolean outOfBounds(GamePiece piece) {
         if (piece.getX() <= ui.getX() + ui.getWidth()) {
             return true;
@@ -125,17 +146,24 @@ public class RPS {
         return false;
     }
 
+    /**
+     * Ends simulation if all pieces are the same type
+     */
     private void checkWinner() {
         for (GamePiece.PieceType team : teamCounts.keySet()) {
             if (teamCounts.get(team) == pieceCount) {
-                ui.toggleButton();
-                running = ui.isRunning();
                 endGame(team);
             }
         }
     }
 
+    /**
+     * Displays winning piece
+     * @param winner
+     */
     private void endGame(GamePiece.PieceType winner) {
+        ui.toggleButton();
+        running = ui.isRunning();
         System.out.println(winner + " WON!");
     }
 
