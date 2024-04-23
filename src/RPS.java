@@ -1,5 +1,4 @@
 import java.awt.Toolkit;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -129,7 +128,8 @@ public class RPS {
     private void checkWinner() {
         for (GamePiece.PieceType team : teamCounts.keySet()) {
             if (teamCounts.get(team) == pieceCount) {
-                running = false;
+                ui.toggleButton();
+                running = ui.isRunning();
                 endGame(team);
             }
         }
