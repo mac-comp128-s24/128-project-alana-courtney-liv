@@ -16,7 +16,6 @@ public class UI extends GraphicsGroup {
     private TextField scissorsInput;
 
     public Button startButton;
-    private boolean running;
 
     private double width;
     private double height;
@@ -26,7 +25,6 @@ public class UI extends GraphicsGroup {
         this.add(new Rectangle(0, 0, width, height));
         this.width = width;
         this.height = height;
-        running = false;
 
         setupGraphics();
     }
@@ -79,18 +77,18 @@ public class UI extends GraphicsGroup {
     /**
      * Stops/starts simulation, updates button to reflect state.
      */
-    public void toggleButton() {
+    public boolean toggleButton(boolean running) {
         if (!running) {
             remove(startButton); // Remove the old button
             startButton = new Button("STOP"); // Create a new button with updated text
             add(startButton, width / 2 - startButton.getWidth() / 2, height * 0.05); // Add the new button to the UI group
-            running = true;
+            return true;
         } 
         else {
             remove(startButton); // Remove the old button
             startButton = new Button("START"); // Create a new button with updated text
             add(startButton, width / 2 - startButton.getWidth() / 2, height * 0.05); // Add the new button to the UI group
-            running = false;
+            return false;
         }
     }
 
@@ -103,9 +101,5 @@ public class UI extends GraphicsGroup {
         rockInput.setText(counts.get(GamePiece.PieceType.ROCK).toString());
         paperInput.setText(counts.get(GamePiece.PieceType.PAPER).toString());
         scissorsInput.setText(counts.get(GamePiece.PieceType.SCISSORS).toString());
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 }

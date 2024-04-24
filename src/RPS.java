@@ -24,6 +24,7 @@ public class RPS {
     private int pieceCount;
     private UI ui;
     private boolean running;
+    private boolean gameOver;
 
     public RPS() {
         canvas = new CanvasWindow("Rock Paper Scissors", (int) WINDOW_WIDTH, (int) WINDOW_HEIGHT);
@@ -35,14 +36,8 @@ public class RPS {
         pieces = new HashSet<>();
         addPieces();
         running = false;
-
-        ui.startButton.onClick(() -> {
-            ui.toggleButton();
-            running = ui.isRunning();
-            if (running) {
-                reset();
-            }
-        });
+        gameOver = false;
+        setStartButton();
     }
 
     /**
@@ -75,6 +70,16 @@ public class RPS {
             tempScissors.setMaxHeight(scale);
             pieces.add(tempScissors);
         }
+    }
+
+    private void setStartButton() {
+        ui.startButton.onClick(() -> {
+            running = ui.toggleButton(running);
+            if (gameOver) {
+                reset();
+            }
+            setStartButton();
+        });
     }
 
     private void run() {
@@ -167,8 +172,8 @@ public class RPS {
      * @param winner
      */
     private void endGame(GamePiece.PieceType winner) {
-        ui.toggleButton();
-        running = ui.isRunning();
+        running = ui.toggleButton(running);
+        gameOver = true;
         System.out.println(winner + " WON!");
     }
 
