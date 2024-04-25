@@ -15,6 +15,7 @@ public class GamePiece extends Image {
     private static final double WIGGLINESS = 0.2;
     private double direction;
     private PieceType type;
+    private double radius = getWidth()/2;
 
     public GamePiece(PieceType type) {
         super(0,0);
@@ -44,6 +45,13 @@ public class GamePiece extends Image {
         direction -= 180;
     }
 
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double newRadius) {
+        radius = newRadius;
+    }
     /**
      * Calculates next position of this GamePiece
      * @param centerOfGravity point around which GamePiece moves
