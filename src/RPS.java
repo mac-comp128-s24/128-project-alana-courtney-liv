@@ -15,7 +15,7 @@ import edu.macalester.graphics.Point;
  */
 public class RPS {
     private final double WINDOW_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    private final double WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private final double WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 100;
     private final GamePieceComparator gpc = new GamePieceComparator();
     private final Random r = new Random();
 
@@ -131,23 +131,26 @@ public class RPS {
             for (int j = i + 1; j < pieces.size(); j += 1) {
                 GamePiece piece2 = pieces.get(j);
                 if (piece1.getRadius() + piece2.getRadius() > piece1.getCenter().distance(piece2.getCenter())) {
-                    int result = gpc.compare(piece1, piece2);
-                    if (result == -1) {
-                        teamCounts.put(piece1.getType(), teamCounts.get(piece1.getType()) - 1);
-                        piece1.setType(piece2.getType());
-                        teamCounts.put(piece1.getType(), teamCounts.get(piece1.getType()) + 1);
-                        ui.updateTeamCounts(teamCounts);
-                    } else if (result == 1) {
-                        teamCounts.put(piece2.getType(), teamCounts.get(piece2.getType()) - 1);
-                        piece2.setType(piece1.getType());
-                        teamCounts.put(piece2.getType(), teamCounts.get(piece2.getType()) + 1);
-                        ui.updateTeamCounts(teamCounts);
-                    }
+                    collision(piece1, piece2);
                 }
             }
         }
-     }
+    }
     
+    private void collision(GamePiece piece1, GamePiece piece2) {
+        int result = gpc.compare(piece1, piece2);
+        if (result == -1) {
+            teamCounts.put(piece1.getType(), teamCounts.get(piece1.getType()) - 1);
+            piece1.setType(piece2.getType());
+            teamCounts.put(piece1.getType(), teamCounts.get(piece1.getType()) + 1);
+            ui.updateTeamCounts(teamCounts);
+        } else if (result == 1) {
+            teamCounts.put(piece2.getType(), teamCounts.get(piece2.getType()) - 1);
+            piece2.setType(piece1.getType());
+            teamCounts.put(piece2.getType(), teamCounts.get(piece2.getType()) + 1);
+            ui.updateTeamCounts(teamCounts);
+        }
+    }
     /**
      * Checks whether given piece is out of bounds
      * @param piece GamePiece whose position is being validated
