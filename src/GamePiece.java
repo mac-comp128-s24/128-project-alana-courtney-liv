@@ -20,7 +20,7 @@ public class GamePiece extends Image {
     public GamePiece(PieceType type) {
         super(0,0);
         this.type = type;
-        direction = 0;
+        direction = Math.random() * 6;
         setPath();
     }
 

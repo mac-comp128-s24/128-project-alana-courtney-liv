@@ -16,6 +16,7 @@ public class UI extends GraphicsGroup {
     public TextField paperInput;
     public TextField scissorsInput;
 
+    public Button resetButton;
     public Button startButton;
 
     private GraphicsText enterTip;
@@ -48,8 +49,10 @@ public class UI extends GraphicsGroup {
         scissorsInput.setText("10");
         add(scissorsInput, width * .5, height * .4);
 
-        startButton = new Button("START");
-        add(startButton, width / 2 - startButton.getWidth() / 2, height * .05);
+        resetButton = new Button("RESET");
+        add(resetButton, width / 2 - resetButton.getWidth() * 0.75, height * 0.05);
+
+        addStartButton("START");
 
         GamePiece rockIcon = new GamePiece(GamePiece.PieceType.ROCK);
         rockIcon.setMaxWidth(.2 * width);
@@ -81,21 +84,26 @@ public class UI extends GraphicsGroup {
     }
 
     /**
-     * Stops/starts simulation, updates button to reflect state.
+     * Stops/starts/resets simulation, updates button to reflect state.
+     * @return whether the simulation should be running after button click
      */
-    public boolean toggleButton(boolean running) {
+    public boolean toggleStartButton(boolean running) {
         if (!running) {
-            remove(startButton); // Remove the old button
-            startButton = new Button("STOP"); // Create a new button with updated text
-            add(startButton, width / 2 - startButton.getWidth() / 2, height * 0.05); // Add the new button to the UI group
+            addStartButton("STOP");
             return true;
         } 
         else {
-            remove(startButton); // Remove the old button
-            startButton = new Button("START"); // Create a new button with updated text
-            add(startButton, width / 2 - startButton.getWidth() / 2, height * 0.05); // Add the new button to the UI group
+            addStartButton("START");
             return false;
         }
+    }
+
+    private void addStartButton(String title) {
+        if (startButton != null) {
+            remove(startButton);
+        }
+        startButton = new Button(title);
+        add(startButton, width / 2 + startButton.getWidth() / 4, height * 0.05);
     }
 
 
@@ -107,5 +115,14 @@ public class UI extends GraphicsGroup {
         rockInput.setText(counts.get(GamePiece.PieceType.ROCK).toString());
         paperInput.setText(counts.get(GamePiece.PieceType.PAPER).toString());
         scissorsInput.setText(counts.get(GamePiece.PieceType.SCISSORS).toString());
+    }
+
+    /**
+     * Updates text to reset team counts to 10
+     */
+    public void resetTeamCounts() {
+        rockInput.setText("10");
+        paperInput.setText("10");
+        scissorsInput.setText("10");
     }
 }
