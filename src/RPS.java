@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
@@ -27,8 +28,14 @@ public class RPS {
     private UI ui;
     private boolean running;
     private boolean gameOver;
+    private ArrayList<GamePiece>[][] buckets = new ArrayList[2][2];
 
     public RPS() {
+        for (int i = 0; i < buckets.length; i++) {
+            for (int j = 0; j < buckets[i].length; j++) {
+                buckets[i][j] = new ArrayList<GamePiece>();
+            }
+        }
         canvas = new CanvasWindow("Rock Paper Scissors", (int) WINDOW_WIDTH, (int) WINDOW_HEIGHT);
         pieceGroup = new GraphicsGroup();
         canvas.add(pieceGroup);
@@ -118,7 +125,43 @@ public class RPS {
             if (outOfBounds(piece)) {
                 piece.switchDirection();
                 piece.updatePosition(centerPoint, 10);
+                
             }
+            updateBucket(piece);
+        }
+    }
+
+    private void updateBucket(GamePiece piece) {
+        if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/2 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/2) {
+            if (!buckets[0][0].contains(piece)) {
+                buckets[0][0].add(piece);
+            }
+        } else if (buckets[1][1].contains(piece)) {
+            buckets[1][1].remove(piece);
+        }
+
+        if (piece.getX() > WINDOW_WIDTH/2 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/2) {
+            if (!buckets[0][1].contains(piece)) {
+                buckets[0][1].add(piece);
+            }
+        } else if (buckets[0][1].contains(piece)) {
+            buckets[0][1].remove(piece);
+        }
+
+        if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/2 && piece.getY() > WINDOW_HEIGHT/2) {
+            if (!buckets[1][0].contains(piece)) {
+                buckets[1][0].add(piece);
+            }
+        } else if (buckets[1][0].contains(piece)) {
+            buckets[1][0].remove(piece);
+        }
+
+        if (piece.getX() > WINDOW_WIDTH/2 && piece.getY() > WINDOW_HEIGHT/2) {
+            if (!buckets[1][1].contains(piece)) {
+                buckets[1][1].add(piece);
+            }
+        } else if (buckets[1][1].contains(piece)) {
+            buckets[1][1].remove(piece);
         }
     }
 
@@ -126,17 +169,35 @@ public class RPS {
      * Changes type of overlapping pieces following the logic of Rock, Paper, Scissors
      */
     private void handleCollisions() {
-        for (int i = 0; i < pieces.size(); i += 1) {
-            GamePiece piece1 = pieces.get(i);
-            for (int j = i + 1; j < pieces.size(); j += 1) {
-                GamePiece piece2 = pieces.get(j);
-                if (piece1.getRadius() + piece2.getRadius() > piece1.getCenter().distance(piece2.getCenter())) {
-                    collision(piece1, piece2);
+        for (ArrayList<GamePiece>[] row : buckets) {
+            for(ArrayList<GamePiece> bucket : row) {
+                for (int i = 0; i < bucket.size(); i += 1) {
+                    GamePiece piece1 = bucket.get(i);
+                    for (int j = i + 1; j < bucket.size(); j += 1) {
+                        GamePiece piece2 = bucket.get(j);
+                        if (piece1.getRadius() + piece2.getRadius() > piece1.getCenter().distance(piece2.getCenter())) {
+                            collision(piece1, piece2);
+                        }
+                    }
                 }
             }
         }
+
+
+
+        // for (int i = 0; i < pieces.size(); i += 1) {
+        //     GamePiece piece1 = pieces.get(i);
+        //     for (int j = i + 1; j < pieces.size(); j += 1) {
+        //         GamePiece piece2 = pieces.get(j);
+        //         if (piece1.getRadius() + piece2.getRadius() > piece1.getCenter().distance(piece2.getCenter())) {
+        //             collision(piece1, piece2);
+        //         }
+        //     }
+        // }
     }
     
+    
+
     private void collision(GamePiece piece1, GamePiece piece2) {
         int result = gpc.compare(piece1, piece2);
         if (result == -1) {
