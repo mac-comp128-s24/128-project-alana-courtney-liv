@@ -2,7 +2,6 @@ import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
@@ -43,8 +42,8 @@ public class RPS {
         pieces = new ArrayList<GamePiece>();
         addPieces();
         running = false;
-        gameOver = false;
         setStartButton();
+        setResetButton();
         setupInputs();
     }
 
@@ -85,11 +84,15 @@ public class RPS {
 
     private void setStartButton() {
         ui.startButton.onClick(() -> {
-            running = ui.toggleButton(running);
-            if (gameOver) {
-                reset();
-            }
+            running = ui.toggleStartButton(running);
             setStartButton();
+        });
+    }
+
+    private void setResetButton() {
+        ui.resetButton.onClick(() -> {
+            ui.resetTeamCounts();
+            reset();
         });
     }
 
@@ -133,9 +136,10 @@ public class RPS {
     public void reset() {
         pieceGroup.removeAll();
         pieces.clear();
+        running = false;
+        setStartButton();
         teamCounts = ui.getTeamCounts();
         addPieces();
-        running = false;
     }
 
     /**
@@ -300,8 +304,8 @@ public class RPS {
      * @param winner
      */
     private void endGame(GamePiece.PieceType winner) {
-        running = ui.toggleButton(running);
-        gameOver = true;
+        running = ui.toggleStartButton(running);
+        setStartButton();
     }
 
     public static void main(String[] args) {
