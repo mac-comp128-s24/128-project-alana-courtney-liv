@@ -1,7 +1,5 @@
 import java.awt.Toolkit;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +45,7 @@ public class RPS {
         running = false;
         gameOver = false;
         setStartButton();
+        setupInputs();
     }
 
     /**
@@ -94,6 +93,30 @@ public class RPS {
         });
     }
 
+    private void setupInputs() {
+        ui.rockInput.onChange(e -> {
+            if (e.length() > 1) {
+                if (e.charAt(e.length()-1) == ' ') {
+                reset();
+                }
+            }
+        });
+        ui.paperInput.onChange(e -> {
+            if (e.length() > 1) {
+                if (e.charAt(e.length()-1) == ' ') {
+                reset();
+                }
+            }
+        });
+        ui.scissorsInput.onChange(e -> {
+            if (e.length() > 1) {
+                if (e.charAt(e.length()-1) == ' ') {
+                reset();
+                }
+            }
+        });
+    }
+
     private void run() {
         canvas.animate(() -> {
             if (running) {
@@ -112,7 +135,7 @@ public class RPS {
         pieces.clear();
         teamCounts = ui.getTeamCounts();
         addPieces();
-        running = true;
+        running = false;
     }
 
     /**
@@ -251,7 +274,6 @@ public class RPS {
     private void endGame(GamePiece.PieceType winner) {
         running = ui.toggleButton(running);
         gameOver = true;
-        System.out.println(winner + " WON!");
     }
 
     public static void main(String[] args) {

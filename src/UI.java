@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.ui.TextField;
@@ -11,11 +12,13 @@ import edu.macalester.graphics.ui.TextField;
  */
 public class UI extends GraphicsGroup {
     
-    private TextField rockInput;
-    private TextField paperInput;
-    private TextField scissorsInput;
+    public TextField rockInput;
+    public TextField paperInput;
+    public TextField scissorsInput;
 
     public Button startButton;
+
+    private GraphicsText enterTip;
 
     private double width;
     private double height;
@@ -34,15 +37,15 @@ public class UI extends GraphicsGroup {
      */
     private void setupGraphics() {
         rockInput = new TextField();
-        rockInput.setText("5");
+        rockInput.setText("10");
         add(rockInput, width * .5, height * .2);
 
         paperInput = new TextField();
-        paperInput.setText("5");
+        paperInput.setText("10");
         add(paperInput, width * .5, height * .3);
 
         scissorsInput = new TextField();
-        scissorsInput.setText("5");
+        scissorsInput.setText("10");
         add(scissorsInput, width * .5, height * .4);
 
         startButton = new Button("START");
@@ -59,6 +62,9 @@ public class UI extends GraphicsGroup {
         GamePiece scissorsIcon = new GamePiece(GamePiece.PieceType.SCISSORS);
         scissorsIcon.setMaxWidth(.2 * width);
         add(scissorsIcon, width * .1, height * .375);
+
+        enterTip = new GraphicsText("Press space to update team size\n(this will move everything)");
+        add(enterTip, width * .1, scissorsIcon.getY() + 2 * scissorsIcon.getHeight());
     }
 
     /**
@@ -67,9 +73,9 @@ public class UI extends GraphicsGroup {
     public HashMap<GamePiece.PieceType, Integer> getTeamCounts() {
         HashMap<GamePiece.PieceType, Integer> counts = new HashMap<>();
 
-        counts.put(GamePiece.PieceType.ROCK, Integer.parseInt(rockInput.getText()));
-        counts.put(GamePiece.PieceType.PAPER, Integer.parseInt(paperInput.getText()));
-        counts.put(GamePiece.PieceType.SCISSORS, Integer.parseInt(scissorsInput.getText()));
+        counts.put(GamePiece.PieceType.ROCK, Integer.parseInt(rockInput.getText().strip()));
+        counts.put(GamePiece.PieceType.PAPER, Integer.parseInt(paperInput.getText().strip()));
+        counts.put(GamePiece.PieceType.SCISSORS, Integer.parseInt(scissorsInput.getText().strip()));
 
         return counts;
     }
