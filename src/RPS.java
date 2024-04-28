@@ -205,18 +205,6 @@ public class RPS {
                 }
             }
         }
-
-
-
-        // for (int i = 0; i < pieces.size(); i += 1) {
-        //     GamePiece piece1 = pieces.get(i);
-        //     for (int j = i + 1; j < pieces.size(); j += 1) {
-        //         GamePiece piece2 = pieces.get(j);
-        //         if (piece1.getRadius() + piece2.getRadius() > piece1.getCenter().distance(piece2.getCenter())) {
-        //             collision(piece1, piece2);
-        //         }
-        //     }
-        // }
     }
     
     
