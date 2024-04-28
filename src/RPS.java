@@ -26,7 +26,7 @@ public class RPS {
     private UI ui;
     private boolean running;
     private boolean gameOver;
-    private ArrayList<GamePiece>[][] buckets = new ArrayList[2][2];
+    private ArrayList<GamePiece>[][] buckets = new ArrayList[3][3];
 
     public RPS() {
         for (int i = 0; i < buckets.length; i++) {
@@ -155,15 +155,15 @@ public class RPS {
     }
 
     private void updateBucket(GamePiece piece) {
-        if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/2 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/2) {
+        if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/3 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/3) {
             if (!buckets[0][0].contains(piece)) {
                 buckets[0][0].add(piece);
             }
-        } else if (buckets[1][1].contains(piece)) {
-            buckets[1][1].remove(piece);
+        } else if (buckets[0][0].contains(piece)) {
+            buckets[0][0].remove(piece);
         }
 
-        if (piece.getX() > WINDOW_WIDTH/2 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/2) {
+        if (piece.getX() > WINDOW_WIDTH/3 && piece.getX() + piece.getWidth() < 2*WINDOW_WIDTH/3 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/3) {
             if (!buckets[0][1].contains(piece)) {
                 buckets[0][1].add(piece);
             }
@@ -171,7 +171,15 @@ public class RPS {
             buckets[0][1].remove(piece);
         }
 
-        if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/2 && piece.getY() > WINDOW_HEIGHT/2) {
+        if (piece.getX() > 2*WINDOW_WIDTH/3 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/3) {
+            if (!buckets[0][2].contains(piece)) {
+                buckets[0][2].add(piece);
+            }
+        } else if (buckets[0][2].contains(piece)) {
+            buckets[0][2].remove(piece);
+        }
+
+        if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/3 && piece.getY() > WINDOW_HEIGHT/3 && piece.getY() + piece.getHeight() < 2*WINDOW_HEIGHT/3) {
             if (!buckets[1][0].contains(piece)) {
                 buckets[1][0].add(piece);
             }
@@ -179,12 +187,44 @@ public class RPS {
             buckets[1][0].remove(piece);
         }
 
-        if (piece.getX() > WINDOW_WIDTH/2 && piece.getY() > WINDOW_HEIGHT/2) {
+        if (piece.getX() > WINDOW_WIDTH/3 && piece.getX() + piece.getWidth() < 2*WINDOW_WIDTH/3 && piece.getY() > WINDOW_HEIGHT/3 && piece.getY() + piece.getHeight() < 2*WINDOW_HEIGHT/3) {
             if (!buckets[1][1].contains(piece)) {
                 buckets[1][1].add(piece);
             }
         } else if (buckets[1][1].contains(piece)) {
             buckets[1][1].remove(piece);
+        }
+
+        if (piece.getX() > 2*WINDOW_WIDTH/3 && piece.getY() > WINDOW_HEIGHT/3 && piece.getY() + piece.getHeight() < 2*WINDOW_HEIGHT/3) {
+            if (!buckets[1][2].contains(piece)) {
+                buckets[1][2].add(piece);
+            }
+        } else if (buckets[1][2].contains(piece)) {
+            buckets[1][2].remove(piece);
+        }
+
+        if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/3 && piece.getY() > 2*WINDOW_HEIGHT/3) {
+            if (!buckets[2][0].contains(piece)) {
+                buckets[2][0].add(piece);
+            }
+        } else if (buckets[2][0].contains(piece)) {
+            buckets[2][0].remove(piece);
+        }
+
+        if (piece.getX() > WINDOW_WIDTH/3 && piece.getX() + piece.getWidth() < 2*WINDOW_WIDTH/3 && piece.getY() > 2*WINDOW_HEIGHT/3) {
+            if (!buckets[2][1].contains(piece)) {
+                buckets[2][1].add(piece);
+            }
+        } else if (buckets[2][1].contains(piece)) {
+            buckets[2][1].remove(piece);
+        }
+
+        if (piece.getX() > 2*WINDOW_WIDTH/3  && piece.getY() > 2*WINDOW_HEIGHT/3) {
+            if (!buckets[2][2].contains(piece)) {
+                buckets[2][2].add(piece);
+            }
+        } else if (buckets[2][2].contains(piece)) {
+            buckets[2][2].remove(piece);
         }
     }
 
