@@ -24,7 +24,7 @@ public class RPS {
     private int pieceCount;
     private UI ui;
     private boolean running;
-    private boolean gameOver;
+    @SuppressWarnings("unchecked")
     private ArrayList<GamePiece>[][] buckets = new ArrayList[3][3];
 
     public RPS() {
@@ -125,6 +125,7 @@ public class RPS {
             if (running) {
                 moveAll();
                 handleCollisions();
+                ui.updateTeamCounts(teamCounts);
                 checkWinner();
             }
         });
@@ -137,9 +138,9 @@ public class RPS {
         pieceGroup.removeAll();
         pieces.clear();
         running = false;
-        setStartButton();
         teamCounts = ui.getTeamCounts();
         addPieces();
+        setStartButton();
     }
 
     /**
@@ -259,12 +260,10 @@ public class RPS {
             teamCounts.put(piece1.getType(), teamCounts.get(piece1.getType()) - 1);
             piece1.setType(piece2.getType());
             teamCounts.put(piece1.getType(), teamCounts.get(piece1.getType()) + 1);
-            ui.updateTeamCounts(teamCounts);
         } else if (result == 1) {
             teamCounts.put(piece2.getType(), teamCounts.get(piece2.getType()) - 1);
             piece2.setType(piece1.getType());
             teamCounts.put(piece2.getType(), teamCounts.get(piece2.getType()) + 1);
-            ui.updateTeamCounts(teamCounts);
         }
     }
     /**
@@ -293,7 +292,7 @@ public class RPS {
      */
     private void checkWinner() {
         for (GamePiece.PieceType team : teamCounts.keySet()) {
-            if (teamCounts.get(team) == pieceCount) {
+            if (teamCounts.get(team) == pieces.size()) {
                 endGame(team);
             }
         }

@@ -15,7 +15,7 @@ public class GamePiece extends Image {
     private static final double WIGGLINESS = 0.2;
     private double direction;
     private PieceType type;
-    private double radius = getWidth()/2;
+    private double radius = Math.sqrt(2) * getWidth()/2;
 
     public GamePiece(PieceType type) {
         super(0,0);

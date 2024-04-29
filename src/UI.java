@@ -50,7 +50,7 @@ public class UI extends GraphicsGroup {
         add(scissorsInput, width * .5, height * .4);
 
         resetButton = new Button("RESET");
-        add(resetButton, width / 2 - resetButton.getWidth() * 0.75, height * 0.05);
+        add(resetButton, width * 0.25 - resetButton.getWidth() / 2, height * 0.05);
 
         addStartButton("START");
 
@@ -103,7 +103,7 @@ public class UI extends GraphicsGroup {
             remove(startButton);
         }
         startButton = new Button(title);
-        add(startButton, width / 2 + startButton.getWidth() / 4, height * 0.05);
+        add(startButton, width * 0.75 - startButton.getWidth() / 2, height * 0.05);
     }
 
 
