@@ -15,13 +15,14 @@ public class GamePiece extends Image {
     private static final double WIGGLINESS = 0.2;
     private double direction;
     private PieceType type;
-    private double radius = Math.sqrt(2) * getWidth()/2;
+    private double radius;
 
     public GamePiece(PieceType type) {
         super(0,0);
         this.type = type;
         direction = Math.random() * 6;
         setPath();
+        radius = getWidth() / 2;
     }
 
     /**
@@ -52,8 +53,10 @@ public class GamePiece extends Image {
     public void setRadius(double newRadius) {
         radius = newRadius;
     }
+
     /**
      * Calculates next position of this GamePiece
+     * Modified from COMP 127 Cell Absorption lab
      * @param centerOfGravity point around which GamePiece moves
      * @param speed movement speed of each GamePiece
      */
@@ -70,6 +73,9 @@ public class GamePiece extends Image {
                 + turnTowardCenter * Math.tanh(distToCenter / (WANDER_FROM_CENTER)));
     }
 
+    /**
+     * Borrowed from COMP 127 Cell Absorption lab
+     */
     private static double normalizeRadians(double theta) {
         double pi2 = Math.PI * 2;
         return ((theta + Math.PI) % pi2 + pi2) % pi2 - Math.PI;
