@@ -28,16 +28,12 @@ public class RPS {
     private ArrayList<GamePiece>[][] buckets = new ArrayList[3][3];
 
     public RPS() {
-        for (int i = 0; i < buckets.length; i++) {
-            for (int j = 0; j < buckets[i].length; j++) {
-                buckets[i][j] = new ArrayList<GamePiece>();
-            }
-        }
         canvas = new CanvasWindow("Rock Paper Scissors", (int) WINDOW_WIDTH, (int) WINDOW_HEIGHT);
         pieceGroup = new GraphicsGroup();
         canvas.add(pieceGroup);
         ui = new UI(.2 * WINDOW_WIDTH, WINDOW_HEIGHT);
         canvas.add(ui, 0, 0);
+        createBuckets();
         teamCounts = ui.getTeamCounts();
         pieces = new ArrayList<GamePiece>();
         addPieces();
@@ -47,10 +43,32 @@ public class RPS {
         setupInputs();
     }
 
+    private void run() {
+        canvas.animate(() -> {
+            if (running) {
+                moveAll();
+                handleCollisions();
+                ui.updateTeamCounts(teamCounts);
+                checkWinner();
+            }
+        });
+    }
+
+    /**
+     * Initializes empty bucket structure for acceleration
+     */
+    private void createBuckets() {
+        for (int i = 0; i < buckets.length; i++) {
+            for (int j = 0; j < buckets[i].length; j++) {
+                buckets[i][j] = new ArrayList<GamePiece>();
+            }
+        }
+    }
+
     /**
      * Creates and randomly arranges game pieces based on team counts
      */
-    public void addPieces() {
+    private void addPieces() {
         pieceCount = teamCounts.get(GamePiece.PieceType.ROCK) + teamCounts.get(GamePiece.PieceType.PAPER) + teamCounts.get(GamePiece.PieceType.SCISSORS);
         double scale = WINDOW_HEIGHT / (Math.log(pieceCount) / Math.log(1.2));
         
@@ -96,6 +114,9 @@ public class RPS {
         });
     }
 
+    /**
+     * Adding a space character to the end of an input field will reset the board
+     */
     private void setupInputs() {
         ui.rockInput.onChange(e -> {
             if (e.length() > 1) {
@@ -120,23 +141,13 @@ public class RPS {
         });
     }
 
-    private void run() {
-        canvas.animate(() -> {
-            if (running) {
-                moveAll();
-                handleCollisions();
-                ui.updateTeamCounts(teamCounts);
-                checkWinner();
-            }
-        });
-    }
-
     /**
      * Restarts the game with new team counts
      */
     public void reset() {
         pieceGroup.removeAll();
         pieces.clear();
+        createBuckets();
         running = false;
         teamCounts = ui.getTeamCounts();
         addPieces();
@@ -159,6 +170,9 @@ public class RPS {
         }
     }
 
+    /**
+     * Updates location of piece within bucket structure
+     */
     private void updateBucket(GamePiece piece) {
         if (piece.getX() + piece.getWidth() < WINDOW_WIDTH/3 && piece.getY() + piece.getHeight() < WINDOW_HEIGHT/3) {
             if (!buckets[0][0].contains(piece)) {
@@ -234,7 +248,7 @@ public class RPS {
     }
 
     /**
-     * Changes type of overlapping pieces following the logic of Rock, Paper, Scissors
+     * Identifies overlapping pieces and calls collision mechanism
      */
     private void handleCollisions() {
         for (ArrayList<GamePiece>[] row : buckets) {
@@ -252,8 +266,9 @@ public class RPS {
         }
     }
     
-    
-
+    /**
+     * Changes type of overlapping pieces following the logic of Rock, Paper, Scissors
+     */
     private void collision(GamePiece piece1, GamePiece piece2) {
         int result = gpc.compare(piece1, piece2);
         if (result == -1) {
@@ -293,18 +308,10 @@ public class RPS {
     private void checkWinner() {
         for (GamePiece.PieceType team : teamCounts.keySet()) {
             if (teamCounts.get(team) == pieces.size()) {
-                endGame(team);
+                running = ui.toggleStartButton(running);
+                setStartButton();
             }
         }
-    }
-
-    /**
-     * Displays winning piece
-     * @param winner
-     */
-    private void endGame(GamePiece.PieceType winner) {
-        running = ui.toggleStartButton(running);
-        setStartButton();
     }
 
     public static void main(String[] args) {
