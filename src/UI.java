@@ -98,6 +98,9 @@ public class UI extends GraphicsGroup {
         }
     }
 
+    /**
+     * Creates the start button at the correct location given a title
+     */
     private void addStartButton(String title) {
         if (startButton != null) {
             remove(startButton);
@@ -105,7 +108,6 @@ public class UI extends GraphicsGroup {
         startButton = new Button(title);
         add(startButton, width * 0.75 - startButton.getWidth() / 2, height * 0.05);
     }
-
 
     /**
      * Updates text boxes to display current team counts
